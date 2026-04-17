@@ -42,7 +42,7 @@ const toolSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-toolSchema.index({ code: 1 }, { unique: true })
+
 toolSchema.index({ status: 1, sortOrder: 1 })
 
 const Tool = mongoose.model('Tool', toolSchema)

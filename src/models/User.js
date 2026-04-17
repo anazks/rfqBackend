@@ -148,7 +148,7 @@ const userSchema = new mongoose.Schema(
 
 // ── Index ─────────────────────────────────────
 // Fast lookup by email — used on every login request
-userSchema.index({ email: 1 })
+
 
 // Fast lookup by tenant — used when admin lists all users
 userSchema.index({ tenantId: 1, role: 1 })
