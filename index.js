@@ -65,10 +65,10 @@ app.use(express.json({ limit: '25mb' }))
 app.use(express.urlencoded({ extended: true, limit: '25mb' }))
 
 // ── Platform-level routes ─────────────────────
-const authRoutes     = require('./routes/authRoutes')
-const adminRoutes    = require('./routes/adminRoutes')
-const customerRoutes = require('./routes/customerRoutes')
-const partRoutes     = require('./routes/partRoutes')
+const authRoutes     = require('./src/routes/authRoutes')
+const adminRoutes    = require('./src/routes/adminRoutes')
+const customerRoutes = require('./src/routes/customerRoutes')
+const partRoutes     = require('./src/routes/partRoutes')
 
 app.use('/api/auth',      authRoutes)
 app.use('/api/admin',     adminRoutes)
@@ -76,9 +76,9 @@ app.use('/api/customers', customerRoutes)
 app.use('/api/parts',     partRoutes)
 
 // ── QuoteX tool routes ────────────────────────
-const quotationRoutes = require('./routes/quotex/quotationRoutes')
-const pdfRoutes       = require('./routes/quotex/pdfRoutes')
-const analyticsRoutes = require('./routes/quotex/analyticsRoutes')
+const quotationRoutes = require('./src/routes/quotex/quotationRoutes')
+const pdfRoutes       = require('./src/routes/quotex/pdfRoutes')
+const analyticsRoutes = require('./src/routes/quotex/analyticsRoutes')
 
 app.use('/api/quotex/quotations', quotationRoutes)
 app.use('/api/quotex/pdf',        pdfRoutes)
@@ -112,7 +112,7 @@ mongoose.connect(MONGO_URI)
 
     // Start daily reminder email job (only when SMTP is configured)
     try {
-      const { startReminderJob } = require('./jobs/reminderJob')
+      const { startReminderJob } = require('./src/jobs/reminderJob')
       startReminderJob()
     } catch (err) {
       console.warn('⚠️ Reminder job could not start:', err.message)
