@@ -47,17 +47,27 @@ app.use('/api', apiLimiter)
 app.use('/api/auth', authLimiter)
 
 // ── CORS ──────────────────────────────────────
-app.use(cors())
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://rfqui.vercel.app'
+];
 
-const ALLOWED_ORIGIN = process.env.FRONTEND_URL || 'http://localhost:5173'
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', ALLOWED_ORIGIN)
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-  if (req.method === 'OPTIONS') return res.status(200).end()
-  next()
-})
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // ── Body parsing ──────────────────────────────
 // 25mb limit for base64 file uploads (logos, templates)
